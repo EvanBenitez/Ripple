@@ -15,9 +15,14 @@ def startUp():
     pygame.display.flip()
     return pixels
 
+# draws a circle
+# currently in prototype phase
+def circle():
+    center = (250, 250)
+
 
 def main():
-    startUp()
+    pixels = startUp()
 
     running = True
     while running:
