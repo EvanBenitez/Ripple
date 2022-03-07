@@ -31,13 +31,13 @@ def circle(centerX, centerY, radius, colorShift, array):
         if 0 <= x + center[0] < maxX and 0 < y + center[1] < maxY:
             array[x + center[0], y + center[1]] += colorShift
 
-        if 0 <= -x + center[0] < maxX and 0 <= y + center[1] < maxY:
+        if 0 <= -x + center[0] < maxX and 0 <= y + center[1] < maxY and x != 0: # and not x = 0 to avoid doubling cardnal directions
             array[-x + center[0], y + center[1]] += colorShift
 
         if 0 <= x + center[0] < maxX and 0 <= -y + center[1] < maxY:
             array[x + center[0], -y + center[1]] += colorShift
 
-        if 0 <= -x + center[0] < maxX and 0 <= -y + center[1] < maxY:
+        if 0 <= -x + center[0] < maxX and 0 <= -y + center[1] < maxY and x != 0: # and not x = 0 to avoid doubling cardnal directions
             array[-x + center[0], -y + center[1]] += colorShift
 
         # reverse x and y
@@ -47,10 +47,10 @@ def circle(centerX, centerY, radius, colorShift, array):
         if 0 <= -y + center[0] < maxX and 0 <= x+ center[1] < maxY:
             array[-y + center[0], x + center[1]] += colorShift
 
-        if 0 <= y + center[0] < maxX and 0 <= -x+ center[1] < maxY:
+        if 0 <= y + center[0] < maxX and 0 <= -x+ center[1] < maxY and x != 0: # and not x = 0 to avoid doubling cardnal directions
             array[y + center[0], -x + center[1]] += colorShift
 
-        if 0 <= -y + center[0] < maxX and 0 <= -x+ center[1] < maxY:
+        if 0 <= -y + center[0] < maxX and 0 <= -x+ center[1] < maxY and x != 0: # and not x = 0 to avoid doubling cardnal directions
             array[-y + center[0], -x + center[1]] += colorShift
 
         x += 1
