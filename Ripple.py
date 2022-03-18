@@ -69,21 +69,25 @@ def circle(centerX, centerY, radius, colorShift, array):
     pygame.display.flip()
 
 def ripple(mouse_pos, pixels):
-    WAVE_ELEMENTS = 10 # number of wave heights
-    SPACING = 5 # space between wave elements
-    WAVE_MAX = 6 # constant for wave height
+    WAVE_ELEMENTS = 20 # number of wave heights
+    SPACING = 2 # space between wave elements
+    WAVE_MAX = 10 # constant for wave height
     r = 0
+    max_radius = max(math.sqrt(mouse_pos[0]**2 + mouse_pos[1]**2), 
+                        math.sqrt((maxX - mouse_pos[0])**2 + mouse_pos[1]**2), 
+                        math.sqrt(mouse_pos[0]**2 + (maxY - mouse_pos[1])**2), 
+                        math.sqrt( (maxX - mouse_pos[0])**2 + (maxY - mouse_pos[1])**2) 
+                    )
     
-    while r < maxX or r < maxY:
+    while r < max_radius + SPACING * WAVE_ELEMENTS:
         for i in range(WAVE_ELEMENTS):
             wave_r = r - SPACING * i
             if wave_r >= 0:
-                wave_height = math.sin(2 * math.pi * (i / WAVE_ELEMENTS))
+                wave_height = math.cos(2 * math.pi * (i / WAVE_ELEMENTS))
                 adjust = int(WAVE_MAX * wave_height)
                 circle(mouse_pos[0], mouse_pos[1], wave_r, (adjust,adjust,adjust), pixels)
         r += 1
         time.sleep(0.01)
-        # circle(mouse_pos[0], mouse_pos[1], r-10, (-50,-50,-50), pixels)
 
 
 def main():
