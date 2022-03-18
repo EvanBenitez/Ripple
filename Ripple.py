@@ -1,10 +1,12 @@
+import math
 import pygame
+import time
 
 # settings
 maxX = 500
 maxY = 500
 FRAME_SIZE = (maxX, maxY)
-BACKGROUND_COLOR = (0, 0, 0)
+BACKGROUND_COLOR = (127, 127, 127)
 
 # Boiler plate initilizaton
 # Also returns an array of the pixes (Note): this is not stored in the conventional RGB or grayscale values
@@ -20,13 +22,18 @@ def startUp():
 # draws a circle
 # currently in prototype phase
 def circle(centerX, centerY, radius, colorShift, array):
+
     # adjust colorshift into pygame format it esesentually acts as a base 255 number system from the RGB
     colorShift = colorShift[0] * 256**2 + colorShift[1] * 256 + colorShift[2]
     center = (centerX, centerY)
     x = 0
     y = radius
     h = 1 - radius
-    while x < y:
+
+    if radius == 0: # for radius 0
+        array[center[0], center[1]] += colorShift
+
+    while x <= y:
         # need to check for out of bounds
         if 0 <= x + center[0] < maxX and 0 < y + center[1] < maxY:
             array[x + center[0], y + center[1]] += colorShift
@@ -41,16 +48,16 @@ def circle(centerX, centerY, radius, colorShift, array):
             array[-x + center[0], -y + center[1]] += colorShift
 
         # reverse x and y
-        if 0 <= y + center[0] < maxX and 0 <= x+ center[1] < maxY:
+        if 0 <= y + center[0] < maxX and 0 <= x + center[1] < maxY and x != y:
             array[y + center[0], x + center[1]] += colorShift
         
-        if 0 <= -y + center[0] < maxX and 0 <= x+ center[1] < maxY:
+        if 0 <= -y + center[0] < maxX and 0 <= x + center[1] < maxY and x != y:
             array[-y + center[0], x + center[1]] += colorShift
 
-        if 0 <= y + center[0] < maxX and 0 <= -x+ center[1] < maxY and x != 0: # and not x = 0 to avoid doubling cardnal directions
+        if 0 <= y + center[0] < maxX and 0 <= -x + center[1] < maxY and x != 0 and x != y: # and not x = 0 to avoid doubling cardnal directions
             array[y + center[0], -x + center[1]] += colorShift
 
-        if 0 <= -y + center[0] < maxX and 0 <= -x+ center[1] < maxY and x != 0: # and not x = 0 to avoid doubling cardnal directions
+        if 0 <= -y + center[0] < maxX and 0 <= -x + center[1] < maxY and x != 0 and x != y: # and not x = 0 to avoid doubling cardnal directions
             array[-y + center[0], -x + center[1]] += colorShift
 
         x += 1
@@ -61,6 +68,22 @@ def circle(centerX, centerY, radius, colorShift, array):
             y -= 1
     pygame.display.flip()
 
+def ripple(mouse_pos, pixels):
+    WAVE_ELEMENTS = 10 # number of wave heights
+    SPACING = 5 # space between wave elements
+    WAVE_MAX = 6 # constant for wave height
+    r = 0
+    
+    while r < maxX or r < maxY:
+        for i in range(WAVE_ELEMENTS):
+            wave_r = r - SPACING * i
+            if wave_r >= 0:
+                wave_height = math.sin(2 * math.pi * (i / WAVE_ELEMENTS))
+                adjust = int(WAVE_MAX * wave_height)
+                circle(mouse_pos[0], mouse_pos[1], wave_r, (adjust,adjust,adjust), pixels)
+        r += 1
+        time.sleep(0.01)
+        # circle(mouse_pos[0], mouse_pos[1], r-10, (-50,-50,-50), pixels)
 
 
 def main():
@@ -78,7 +101,10 @@ def main():
             # create ripple... eventually
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                circle(mouse_pos[0], mouse_pos[1], 30, (100,100,100), pixels)
+                # circle(mouse_pos[0], mouse_pos[1], 30, (100,100,100), pixels)
+                ripple(mouse_pos, pixels)
+                # x = threading.Thread(target=ripple, args=(mouse_pos, pixels,), daemon=True)
+                # x.start()
 
 if __name__ == "__main__":
     main()
