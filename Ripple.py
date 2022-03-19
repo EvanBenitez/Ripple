@@ -69,7 +69,7 @@ def circle(centerX, centerY, radius, colorShift, array):
     pygame.display.flip()
 
 def ripple(mouse_pos, pixels):
-    WAVE_ELEMENTS = 20 # number of wave heights
+    WAVE_ELEMENTS = 21 # number of wave heights
     SPACING = 2 # space between wave elements
     WAVE_MAX = 10 # constant for wave height
     r = 0
@@ -79,15 +79,30 @@ def ripple(mouse_pos, pixels):
                         math.sqrt( (maxX - mouse_pos[0])**2 + (maxY - mouse_pos[1])**2) 
                     )
     
+    # while r < max_radius + SPACING * WAVE_ELEMENTS:
+    #     for i in range(WAVE_ELEMENTS):
+    #         wave_r = r - SPACING * i
+    #         if wave_r >= 0:
+    #             wave_height = math.cos(2 * math.pi * (i / WAVE_ELEMENTS))
+                
+    #             adjust = int(WAVE_MAX * wave_height)
+    #             circle(mouse_pos[0], mouse_pos[1], wave_r, (adjust,adjust,adjust), pixels)
+    #     r += 1
+    #     time.sleep(0.01)
+
+    # more accurate wave, however introduces very slight color distortions
     while r < max_radius + SPACING * WAVE_ELEMENTS:
         for i in range(WAVE_ELEMENTS):
             wave_r = r - SPACING * i
             if wave_r >= 0:
-                wave_height = math.cos(2 * math.pi * (i / WAVE_ELEMENTS))
+                wave_height = math.sin(3 * math.pi * (i / WAVE_ELEMENTS))
+                if i >= WAVE_ELEMENTS * 1 / 3 and i < WAVE_ELEMENTS * 2 / 3:
+                    wave_height *= 2
+
                 adjust = int(WAVE_MAX * wave_height)
                 circle(mouse_pos[0], mouse_pos[1], wave_r, (adjust,adjust,adjust), pixels)
         r += 1
-        time.sleep(0.01)
+        # time.sleep(0.01)
 
 
 def main():
@@ -102,7 +117,7 @@ def main():
                 pygame.display.quit()
                 pygame.quit()
 
-            # create ripple... eventually
+            # create ripple
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 # circle(mouse_pos[0], mouse_pos[1], 30, (100,100,100), pixels)
