@@ -90,16 +90,17 @@ def ripple(mouse_pos, pixels):
     #     r += 1
     #     time.sleep(0.01)
 
-    # more accurate wave, however introduces very slight color distortions
+    # more accurate wave
     while r < max_radius + SPACING * WAVE_ELEMENTS:
         for i in range(WAVE_ELEMENTS):
             wave_r = r - SPACING * i
             if wave_r >= 0:
                 wave_height = math.sin(3 * math.pi * (i / WAVE_ELEMENTS))
-                if i >= WAVE_ELEMENTS * 1 / 3 and i < WAVE_ELEMENTS * 2 / 3:
-                    wave_height *= 2
-
                 adjust = int(WAVE_MAX * wave_height)
+
+                if i >= WAVE_ELEMENTS * 1 / 3 and i < WAVE_ELEMENTS * 2 / 3:
+                    adjust *= 2
+                
                 circle(mouse_pos[0], mouse_pos[1], wave_r, (adjust,adjust,adjust), pixels)
         r += 1
         # time.sleep(0.01)
