@@ -29,6 +29,7 @@ def gray(im):
     w, h = im.shape
     ret = np.empty((w, h, 3), dtype=np.uint8)
     ret[:, :, 2] = ret[:, :, 1] = ret[:, :, 0] = im
+    ret = 255 - ret
     return scale_up(ret)
 
 
