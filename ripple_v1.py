@@ -66,7 +66,7 @@ def circle(centerX, centerY, radius, colorShift, array):
         else:
             h += 2 * (x - y) + 5
             y -= 1
-    #pygame.display.flip()
+    pygame.display.flip()
 
 def ripple(mouse_pos, pixels):
     WAVE_ELEMENTS = 21 # number of wave heights

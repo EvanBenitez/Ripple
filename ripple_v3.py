@@ -110,10 +110,10 @@ def draw_circle(circle_object: Circle, internal_array):
         wave_r = circle_object.current_radius - i # Wave spacing is 1 here, always
         if wave_r >= 0:
             wave_height = math.sin(3 * math.pi * (i/WAVE_ELEMENTS))
-            adjust = int(WAVE_MAX + wave_height)
+            adjust = int(WAVE_MAX + 3*i)
 
-            if i >= WAVE_ELEMENTS * i/3 and i < WAVE_ELEMENTS * 2/3:
-                adjust *= 2
+            # if i >= WAVE_ELEMENTS * i/3 and i < WAVE_ELEMENTS * 2/3:
+            #     adjust *= 2
 
             circle(circle_object.center_y, circle_object.center_x, wave_r, adjust, internal_array)
     circle_object.current_radius += 1
